@@ -34,7 +34,7 @@ pipeline {
                     withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
 
                         sh 'docker tag intellipaat jatin765/intellipaat:latest'
-                        sh 'docker push jatin765/pipeline:latest'
+                        sh 'docker push jatin765/intellipaat:latest'
 
                     }
                 }
