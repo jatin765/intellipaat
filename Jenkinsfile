@@ -46,5 +46,14 @@ pipeline {
                 sh 'docker run -d -p 80:80 jatin765/intellipaat:latest'
             }
         }
+
+        stage('Deploy to Kubernets'){
+            steps{
+                withKubeConfig(credentialsId: 'kube-config', serverUrl: 'https://12.0.1.56:6443'){
+                    sh 'kubectl apply -f deployment.yml'
+                }
+            }
+        }
+
     } 
 }
