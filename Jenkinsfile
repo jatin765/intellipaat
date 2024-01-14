@@ -32,7 +32,6 @@ pipeline {
             steps{
                 script{
                     withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
-
                         sh 'docker tag intellipaat jatin765/intellipaat:latest'
                         sh 'docker push jatin765/intellipaat:latest'
 
@@ -47,11 +46,18 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernets'){
+        stage('Deploy to kubenetes'){
             steps{
-                script{
-		    kubernetesDeploy (configs: 'deployment.yml',kubeconfigId: 'kube-config')
+                sshagent(['ubuntu']) {
+                    sh 'StrictHostKeyChecking=no deployment.yml ubuntu@3.109.62.184/home/ubuntu'
                 }
+                script{
+                    try{
+                        sh 'ssh ubuntu@3.109.62.184 kubectl apply -f .'
+                    }catch(error){
+                        sh 'ssh ubuntu@3.109.62.184 kubectl create  -f .'
+                    }
+                }   
             }
         }
 
