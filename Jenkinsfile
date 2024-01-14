@@ -49,8 +49,8 @@ pipeline {
 
         stage('Deploy to Kubernets'){
             steps{
-                withKubeConfig(credentialsId: 'kube-config', serverUrl: 'https://12.0.1.56:6443'){
-                    sh 'kubectl apply -f deployment.yml'
+                script{
+		    kubernetesDeploy (configs: 'deployment.yml',kubeconfigId: 'kube-config')
                 }
             }
         }
