@@ -49,13 +49,13 @@ pipeline {
         stage('Deploy to kubenetes'){
             steps{
                 sshagent(['ubuntu']) {
-                    sh 'StrictHostKeyChecking=no deployment.yml ubuntu@3.109.62.184/home/ubuntu'
+                    sh 'scp -o StrictHostKeyChecking=no deployment.yml ubuntu@3.109.62.184:/home/ubuntu'
                 }
                 script{
                     try{
                         sh 'ssh ubuntu@3.109.62.184 kubectl apply -f .'
                     }catch(error){
-                        sh 'ssh ubuntu@3.109.62.184 kubectl create  -f .'
+                        sh 'ssh ubuntu@3.109.62.184 kubectl create -f .'
                     }
                 }   
             }
